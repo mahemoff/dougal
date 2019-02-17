@@ -1,0 +1,20 @@
+# TRELLO CREDENTIALS
+# See https://github.com/playerfm/dougal/README.md for how to get these
+trello_api_key: ...
+trello_oauth_token: ...
+
+# SLACK (OPTIONAL)
+# See https://github.com/playerfm/dougal/README.md for how to get this
+slack_oauth_token: ...
+
+# PROJECTS
+# Each project has:
+# - trello_board: ID or URL of the source Trello board
+# - slack_channel (optional): Where the report will be sent
+# - members (optional, default false): If true, will produce a separate report per member
+projects:
+- trello_board: https://trello.com/b/nC8QJJoZ/trello-development-roadmap
+  slack_channel: #dev
+- trello_board: https://trello.com/b/qfZCai4F/discovery-updates
+  slack_channel: #discovery
+  members: true

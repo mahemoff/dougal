@@ -8,25 +8,23 @@ Dougal helps you by generating Trello TODO/DOING/DONE/ABANDONED lists as a conve
 
 1. Ensure Ruby is on your system (verify by running `ruby -v`)
 2. `gem install dougal` # once it's on rubygems.
-3. Run `dougal`. It will generate a config file if not already present.
-4. Open the config file and run `dougal report` again to generate the report.
+3. Run `dougal`. Dougal will generate a config file for you to edit, if not already present.
+4. Edit the config file and run `dougal report` again to generate the report.
 
 # Installation using Docker
 
 Installing via Docker can be simpler and less headaches with conflicts and compilation.
 
 1. Ensure Docker is on your system.
-2. docker build -t dougal https://github.com/playerfm/dougal
-3. Run `docker run --mount=target=/root/.config,type=bind,source=$HOME/.config -it dougal`. It will generate a config file (on your host system) if not already present.
-4. Open the config file and run the above command ending with `dougal report` to generate the report.
+2. docker build -t dougal https://github.com/playerfm/dougal.git
+3. Run `(mkdir -p ~/.config && docker run --mount=target=/root/.config,type=bind,source=$HOME/.config -it dougal)`. Dougal will generate a config file (on your host system) for you to edit, if not already present.
+4. Open the config file and run the above command, appending `report` (i.e., `... -it dougal)` to generate the report.
 
 # Configuring your projects
 
-For each project, you'll specify:
-
-* `trello_board`: The Trello board URL.
+For each project, you'll specify a `trello_board` indicating the URL of the board which the report is sourced from. Further project options are:
 * `slack_channel`: The Slack channel, if you want to post the message to Slack. Otherwise, it will be output on stdout.
-* `members`: A `true` or `false` preference indicating if the report is to be split into a separate list per member.
+* `members`: A `true` or `false` preference indicating if the report is to be split into a separate list per member (default false).
 
 # Configuring Trello
 

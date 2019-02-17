@@ -1,6 +1,14 @@
+##############################################################################
+# Generic convenience library for posting to Slack
+##############################################################################
+
 module Dougal
 
   class Slacker
+
+    #######################################################################
+    # Post a message to a channel
+    #######################################################################
 
     def self.post(channel, message)
 
@@ -21,21 +29,27 @@ module Dougal
       )
 
       if res.code=='200'
-        puts 'Message sent'
+        puts "Message sent to #{channel}"
       else
         puts "Error: #{res.code}\n#{res.body}"
       end
+
       result = JSON.parse(res.body)
       if !result['ok']
         puts res.body
-        puts "warning: #{result['warning']}"  if result['warning']
-        puts "error: #{result['error']}" if result['error']
-        puts "meta: #{result['response_metadata']}"
+        puts "Warning: #{result['warning']}"  if result['warning']
+        puts "Error: #{result['error']}" if result['error']
+        puts "Meta: #{result['response_metadata']}"
       end
 
     end
 
-    # why does ruby make this so hard?
+    #######################################################################
+    # Generic HTTP JSON post
+    # Using Net::HTTP which is painful, but means we don't have to require
+    # a 3rd party library
+    #######################################################################
+
     def self.post_json(url, payload, headers={})
       begin
         uri = URI(url)

@@ -6,6 +6,10 @@ module Dougal
 
   class CLI
 
+    ##########################################################################
+    # RUN FROM COMMAND LINE ARGS
+    ##########################################################################
+
     def run(*args)
       command = args.first
       if command=='report'

@@ -1,5 +1,4 @@
 %w(byebug date json hashie trello yaml fileutils uri net/http).each { |f| require f }
-
 require_relative "dougal/version"
 
 module Dougal

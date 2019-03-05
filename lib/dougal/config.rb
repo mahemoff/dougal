@@ -23,7 +23,7 @@ module Dougal
         exit 1
       end
 
-      Trello.configure do |config|
+      ::Trello.configure do |config|
         config.developer_public_key = @config[:trello_api_key]
         config.member_token = @config[:trello_oauth_token]
       end

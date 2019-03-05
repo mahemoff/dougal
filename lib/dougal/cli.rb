@@ -48,16 +48,15 @@ module Dougal
       Dougal::Config.init
       projects = Dougal::Config.get(:projects)
       puts "Dougal will now generate #{projects.size} projects"
-      projects.each { |config| report_project config }
-    end
-
-    def report_project(project_config)
-      message = Dougal::Board.new(project_config).generate
-      if project_config.slack_channel
-        Slacker.post project_config.slack_channel, message
-      else
-        puts message
-      end
+      projects.each { |project_config|
+        board = Board.new(project_config)
+        message = BoardReport.new(board, project_config).generate
+        if project_config.slack_channel
+          Dougal::Utils::Slacker.post project_config.slack_channel, message
+        else
+          puts message
+        end
+      }
     end
 
   ##############################################################################

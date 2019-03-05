@@ -9,6 +9,7 @@ module Dougal
     TEMPLATE_CONFIG_FILE = "#{Dougal.root}/config/config.yaml.template"
 
     def self.init
+
       @config = Hashie::Mash.new
       FileUtils.mkdir_p CONFIG_DIR
       config_files = Dir.glob("#{CONFIG_DIR}/**/*.yaml")
@@ -21,6 +22,12 @@ module Dougal
         puts "Please configure #{DEFAULT_CONFIG_FILE} first"
         exit 1
       end
+
+      Trello.configure do |config|
+        config.developer_public_key = @config[:trello_api_key]
+        config.member_token = @config[:trello_oauth_token]
+      end
+
     end
 
     def self.get(key, default=nil)

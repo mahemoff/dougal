@@ -7,7 +7,7 @@ module Dougal
     class TimerTest < Minitest::Test
 
       def test_we_can_parse_with_flexible_wording
-        assert_equal 5.hours, Utils::Timer.parse_duration("blah (5h)")
+        assert_equal 5.hours, Timer.parse_duration("blah (5h)")
         assert_equal 5.6.hours, Timer.parse_duration("blah (5.6h)")
         assert_equal 5.6.hours, Timer.parse_duration("blah (5.6 h)")
         assert_equal 5.6.hours, Timer.parse_duration("blah (5.6hrs)")

@@ -7,4 +7,4 @@ module Dougal
   end
 end
 
-Dir[File.dirname(__FILE__) + '/dougal/**/*.rb'].each { |f| require f }
+Dir[File.dirname(__FILE__) + '/dougal/**/*.rb'].sort.each { |f| puts f; require f }

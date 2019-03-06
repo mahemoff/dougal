@@ -3,9 +3,14 @@ module Dougal
 
   module Trello
 
-    class Board
+    class Board < Wrapper
 
-      attr_accessor :members_by_id, :lists_by_id, :cards_by_id
+      PASSTHROUGHS = %w(id name)
+
+      attr_accessor :members_by_id # has_many
+      attr_accessor :lists_by_id # has_many
+      attr_accessor :cards_by_id # has_many through lists
+      attr_accessor :cards_by_member_id
 
       ALL_LISTS_RE = /todo|doing|done/i 
 
@@ -13,37 +18,42 @@ module Dougal
       # INITIALISE AND READ CONFIG
       ##############################################################################
 
+      def self.create_from_config(board_url)
+        if board_url =~ %r(\Ahttps://trello.com/b/(.*?)/)
+          self.new(::Trello::Board.find($1))
+        else
+          raise("Could not determine board ID from #{id}")
+        end
+      end
+
       # Get credentials from instructions at https://github.com/jeremytregunna/ruby-trello
       # And store them in your environment (e.g. via bashrc)
-      def initialize(project_config)
+      def initialize(direct)
 
-        @project_config = project_config
+        super direct
 
-        @trello_board = ::Trello::Board.find(self.class.extract_short_id(@project_config.trello_board))
-
-        @members_by_id = @trello_board.members
+        @members_by_id = @direct.members
           .map { |member| [member.id, Member.new(member)] }
           .to_h
 
-        @lists_by_id = @trello_board.lists
+        @lists_by_id = @direct.lists
           .select { |trello_list| trello_list.name =~ ALL_LISTS_RE }
           .map { |trello_list| [trello_list.id, List.new(self, trello_list)] }
           .to_h
 
-        #@cards_by_id = @lists_by_id.values
-          #.map { |list| list.cards }
-          #.flatten
-          #.map { |card| [card.id, card] }
-          #.to_h
+        @cards_by_id = @lists_by_id.values
+          .map { |list| list.cards }
+          .flatten
+          .map { |card| [card.id, card] }
+          .to_h
 
-      end
+        @cards_by_member_id = @cards_by_id.values.each_with_object({}) { |card, all|
+          card.members.each { |member|
+            all[member.id] ||= []
+            all[member.id] << card
+          }
+        }
 
-      def self.extract_short_id(id)
-        if id =~ %r(\Ahttps://trello.com/b/(.*?)/)
-          $1
-        else
-          raise "Could not determine board ID from #{id}"
-        end
       end
 
     end

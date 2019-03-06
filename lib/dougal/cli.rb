@@ -49,7 +49,7 @@ module Dougal
       projects = Dougal::Config.get(:projects)
       puts "Dougal will now generate #{projects.size} projects"
       projects.each { |project_config|
-        board = Trello::Board.new(project_config)
+        board = Trello::Board.create_from_config(project_config.trello_board)
         message = Report::BoardReport.new(board, project_config).generate
         if project_config.slack_channel
           Dougal::Utils::Slacker.post project_config.slack_channel, message

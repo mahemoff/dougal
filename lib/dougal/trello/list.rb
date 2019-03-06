@@ -4,20 +4,16 @@ module Dougal
 
   module Trello
 
-    class List
+    class List < Wrapper
 
       attr_accessor :board, :cards
 
       PASSTHROUGHS = %w(id name)
 
-      def initialize(board, trello_list)
+      def initialize(board, list)
         @board = board
-        @trello_list = trello_list
-        @cards = trello_list.cards.map { |c| Card.new(self, c) }
-      end
-
-      def method_missing(meth, *args)
-        @trello_list.send(meth) if PASSTHROUGHS.include?(meth.to_s)
+        @cards = list.cards.map { |c| Card.new(self, c) }
+        super list
       end
 
     end

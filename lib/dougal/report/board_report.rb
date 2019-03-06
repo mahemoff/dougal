@@ -17,28 +17,33 @@ module Dougal
       def generate
         #now = Time.now.in_time_zone('Europe/London').strftime '%A, %B %d, %Y'
         now = Time.now.strftime '%A, %B %d, %Y'
-        message "*DAILY REPORT: #{now}*\n"
-        if @project_config.members
-          @board.members_by_id.values.each { |member| generate_member_list(member) }
-        else
-          generate_global_list
-        end
-        message "\n_Made for you by Dougal 🐶_"
+        add_message "*DAILY REPORT: #{now}*\n"
+        generate_lists(@project_config.members)
+        add_message "\n_Made for you by Dougal 🐶_"
         @messages.join("\n"); 
       end
 
-      def generate_global_list
-        @all_cards.each { |card|
-          card_message(card)
-        }
+      def generate_lists(per_member)
+        if per_member
+          @board.members.each { |member|
+            cards = @board.cards_by_member_id[member.id]
+            if cards.present?
+              add_message "\n*#{member.full_name}*\n\n"
+              add_messages(cards.map { |card| CardReport.new(card).generate })
+            end
+          }
+        else
+          cards = @board.cards.each { |card|
+            add_message CardReport.new(card).generate
+          }
+        end
       end
 
-      def generate_member_list(member)
-        message "\n*#{member.full_name}*\n\n"
-        @board.lists_by_id.values.each { |list|
-          list.cards.each { |card|
-            message(CardReport.new(card).generate) if card.members.include?(member)
-          }
+      def generate_list(for_member=nil)
+        @board.cards_by_id.values.each { |card|
+          if for_member.nil? || for_member.in?(card.members)
+            add_message(CardReport.new(card).generate)
+          end
         }
       end
 
@@ -46,10 +51,15 @@ module Dougal
     # MESSAGE GENERATION
     #########################################################################
 
-      def message(m, options={})
+      def add_message(message, options={})
         print '.'
-        @messages << m
+        @messages << message
       end 
+
+      def add_messages(messages, options={})
+        print '.'
+        messages.each { |message| @messages << message }
+      end
 
     end
 

@@ -12,7 +12,7 @@ module Dougal
       attr_accessor :cards_by_id # has_many through lists
       attr_accessor :cards_by_member_id
 
-      ALL_LISTS_RE = /todo|doing|done/i 
+      ALL_LISTS_RE = /todo|doing|reviewing|testing|done/i 
 
       ##############################################################################
       # INITIALISE AND READ CONFIG

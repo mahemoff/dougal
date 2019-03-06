@@ -19,7 +19,7 @@ module Dougal
         now = Time.now.strftime '%A, %B %d, %Y'
         add_message "*DAILY REPORT: #{now}*\n"
         generate_lists(@project_config.members)
-        add_message "_Made for you by Dougal 🐶_", pre: 1
+        add_message "_Made for you by Dougal 🐶_"
         @messages.join("\n"); 
       end
 
@@ -29,7 +29,7 @@ module Dougal
             durations_by_list = {}
             cards = @board.cards_by_member_id[member.id]
             if cards.present?
-              add_message "*#{member.full_name}*", pre: 1, post: 2
+              add_message "*#{member.full_name}*", post: 2
               cards.each { |card|
                 add_message CardReport.new(card).generate
                 durations_by_list[card.list.id]||=0
@@ -60,9 +60,11 @@ module Dougal
       end
 
       def generate_durations(durations_by_list)
-        add_messages durations_by_list.map { |list_id, duration|
-          "#{@board.lists_by_id[list_id].name} - #{(duration.to_f/3600).round(1)}h"
-        }
+        if durations_by_list.present?
+          add_messages(durations_by_list.map { |list_id, duration|
+            "#{@board.lists_by_id[list_id].name} - #{(duration.to_f/3600).round(1)}h"
+          }, post: 1)
+        end
       end
 
     #########################################################################
@@ -74,15 +76,14 @@ module Dougal
       end
 
       def add_message(message, options={})
-        print '.'
-        (options[:pre]||0).times { @messages << "\n" }
-        @messages << message
-        (options[:pre]||0).times { @messages << "\n" }
+        add_messages [message], options
       end 
 
       def add_messages(messages, options={})
         print '.'
+        (options[:pre]||0).times { @messages << "\n" }
         messages.each { |message| @messages << message }
+        (options[:post]||0).times { @messages << "\n" }
       end
 
     end

@@ -16,6 +16,8 @@ module Dougal
           "🕑 #{task}"
         elsif list_name =~ /doing/i
           "➡️  *#{task}*"
+        elsif list_name =~ /testing/i
+          "🧐  #{task}"
         elsif list_name =~ /done/i
           "✔  ~#{task}~"
         elsif list_name =~ /abandoned/i

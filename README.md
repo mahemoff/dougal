@@ -16,8 +16,8 @@ Dougal helps you by generating Trello TODO/DOING/DONE/ABANDONED lists as a conve
 Installing via Docker can be simpler and less headaches with conflicts and compilation.
 
 1. Ensure Docker is on your system.
-2. docker build -t dougal https://github.com/playerfm/dougal.git
-3. Run `(mkdir -p ~/.config && docker run --mount=target=/root/.config,type=bind,source=$HOME/.config -it dougal)`. Dougal will generate a config file (on your host system) for you to edit, if not already present.
+2. Run `docker build -t dougal https://github.com/playerfm/dougal.git`.
+3. Run `(mkdir -p ~/.config && docker run --mount=target=/root/.config,type=bind,source=$HOME/.config dougal)`. Dougal will generate a config file (on your host system) for you to edit, if not already present.
 4. Open the config file and run the above command, appending `report` (i.e., `... -it dougal)` to generate the report.
 
 # Configuring your projects

@@ -8,11 +8,12 @@ module Dougal
     DEFAULT_CONFIG_FILE = "#{CONFIG_DIR}/config.yaml"
     TEMPLATE_CONFIG_FILE = "#{Dougal.root}/config/config.yaml.template"
 
-    def self.init
+    def self.init(files: nil)
 
       @config = Hashie::Mash.new
       FileUtils.mkdir_p CONFIG_DIR
-      config_files = Dir.glob("#{CONFIG_DIR}/**/*.yaml")
+      files = [files] if files.present? && files.first.is_a?(String) # support single file arg
+      config_files = files || Dir.glob("#{CONFIG_DIR}/**/*.yaml")
       config_files.each { |f| @config.merge! YAML.load_file(f) }
       if config_files.empty?
         puts "Generated config file"

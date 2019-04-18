@@ -1,0 +1,14 @@
+# TRELLO
+trello_api_key: f5cced7912747c8a86cc4ab57913f7f0
+trello_oauth_token: fe45e7966edce73d83866362fc826be074ac6158234975bd5911a73410400700
+
+# SLACK
+slack_oauth_token: xoxp-2818961375-2818961377-550154264720-05851a051e8ca9c618421c893aa1bad6
+
+# DOUGAL
+projects:
+- trello_board: 'https://trello.com/b/rB1trP1e/android-development'
+  slack_channel: '#aaa-dougal-test'
+- trello_board: 'https://trello.com/b/q5f1T1ks/player-ios'
+  members: true
+  slack_channel: '#aaa-dougal-test'

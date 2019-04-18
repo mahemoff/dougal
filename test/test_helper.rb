@@ -1,4 +1,4 @@
-$LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
-require "dougal"
-
+require_relative '../config/env'
 require "minitest/autorun"
+
+Dougal::Config.init(files: "#{Dougal.root}/test/data/test-config.yml")

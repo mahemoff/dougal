@@ -1,0 +1,14 @@
+# To make tests work, copy this file to test-config.yml. Then replace the "todotodo..." placeholders with your credentials - see README for instructions on how to get them
+
+# TRELLO
+trello_api_key: todotodotodotodotodotodotodotodo
+trello_oauth_token: todotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodo
+
+# SLACK
+slack_oauth_token: todotodotodotodotodotodotodotodotodotodotodotodotodotodotodotodo
+
+# DOUGAL
+projects:
+- trello_board: 'https://trello.com/b/mtr0FLcy/vacation-planning'
+  slack_channel: '#vacation-planning'
+  owner: fidoplanner

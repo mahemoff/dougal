@@ -4,13 +4,18 @@ module Dougal::Trello
 
   class BoardTest < Minitest::Test
 
-    def test_board_has_cards
+    def setup
+      @board = Board.create_from_config('https://trello.com/b/mtr0FLcy/vacation-planning')
+    end
 
-      board = Board.create_from_config('https://trello.com/b/mtr0FLcy/vacation-planning')
-      assert board.present?
-      assert_equal 'Vacation Planning', board.name
+    def test_board_metadata
+      assert @board.present?
+      assert_equal 'Vacation Planning', @board.name
+    end
 
-      lists = board.lists_by_id.values
+    def test_lists
+
+      lists = @board.lists_by_id.values
       assert_equal ['TODO SOON', 'DOING', 'DONE'], lists.map(&:name)
 
       todo = lists.find { |list| list.name == 'TODO SOON' }

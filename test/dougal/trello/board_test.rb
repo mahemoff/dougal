@@ -27,6 +27,16 @@ module Dougal::Trello
 
     end
 
+    def test_cards
+
+      cards = @board.cards_by_id.values
+      notify_work = cards.find { |card| card.name=='Notify work (10m)' }
+      #assert notify_work
+      assert notify_work.present?
+      assert_equal ['fidoplanner'], notify_work.members.map(&:username)
+
+    end
+
   end
 
 end
